@@ -13,11 +13,12 @@ firebaseConfig = {
   "messagingSenderId": "509557476876",
   "appId": "1:509557476876:web:c4dd591c0f61d39768a829",
   "measurementId": "G-H1KE36PRQ8",
-  "databaseURL":""
+  "databaseURL":"https://adammm-95a11-default-rtdb.firebaseio.com/"
 }
 
 firebase = pyrebase.initialize_app(firebaseConfig)
 auth = firebase.auth()
+db=firebase.database()
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
 
@@ -66,6 +67,20 @@ def signup():
 
 @app.route('/add_tweet', methods=['GET', 'POST'])
 def add_tweet():
+    if request.method == 'POST':
+       try:
+           tweets= {
+                      "tweet": request.form['tweet']}
+           db.child("tweets").push(tweets)
+       except:
+            print("tweeted!")
+            return render_template("add_tweet.html")
+
+
+
+
+
+    else:
     return render_template("add_tweet.html")
 
 
